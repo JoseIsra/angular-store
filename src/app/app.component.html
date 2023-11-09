@@ -1,109 +1,14 @@
-<h1>Hello angular bro 😀</h1>
-
-<h1>Property binding</h1>
-<p>
-  {{inputName}}
-</p>
-
-<input #nameInput="ngModel" required type="text" [(ngModel)]="inputName" />
-
-<button (click)="handleToggleBtn()">Toggle disabled button</button>
-<button [disabled]="isBtnDisabled">Soy un boton de prueba</button>
-<p>Say my name: {{ name}} </p>
-<p>Say my age: {{ age }} </p>
-
-<div class="my-10">
-  <h1 class="text-xl font-bold">*ngIf directive adventure
-
-  </h1>
-  <p *ngIf="beyondHalf; else lowPoint">Muy bien sigue así 😀!!
-    <ng-container *ngIf="progressValue === 90">
-      Ya casi estás ahí boy !!!
-    </ng-container>
-
-    <ng-container *ngIf="progressValue === 100">
-      Excelente
-    </ng-container>
-
-  </p>
-  <ng-template #lowPoint>
-    <p>No te rindas 🙂</p>
-  </ng-template>
-  <button (click)="lessProgress()"> -10</button>
-  <progress max="100" [value]="progressValue"></progress>
-  <button (click)="moreProgress()"> +10 </button>
-</div>
-<button (click)="toggleThing()">Toggle the thing</button>
-<p *ngIf="showThing">Soy la cosa que ves y no depende del togggle</p>
-
-<section class="my-10">
-
-  <h1 class="text-xl font-bold">*ngFor directive</h1>
-  <div>
-    <p>Para recorrer cosas chidas con el *ngFor</p>
-    <form (submit)="addNewItem($event)">
-      <input type="text" [(ngModel)]="itemName" name="itemName" />
-      <button type="submit">Add more</button>
-    </form>
-    <ul>
-      <li *ngFor="let emoji of emojis; let idx = index">
-        <div>
-          <p>
-            {{ emoji }} - {{ idx }}
-          </p>
-          <button (click)="removeItem(idx)">Remove item</button>
-
-        </div>
-      </li>
-    </ul>
-
-    <section [ngStyle]="{padding: '8px', border: '1px solid red'}">
-      <h1>Pc components</h1>
-      <div *ngFor="let item of pcComponents; trackBy: trackByItems">
-        <h3>
-          <strong>
-            {{item.name }}
-          </strong>
-        </h3>
-        <p> {{ item.description }} </p>
-      </div>
-    </section>
-
-  </div>
+<section>
+  <app-store-header />
+  <section
+    class="p-5 grid w-full grid-rows-3 grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-10"
+  >
+    <app-product-card
+      *ngFor="let product of products"
+      [title]="product.title"
+      [price]="product.price"
+      [img]="product.image"
+      (productSelected)="onProductSelected(product)"
+    />
+  </section>
 </section>
-
-
-<section class="my-10">
-  <h1 class="text-2xl font-bold"> *ngSwitch directive explanation</h1>
-  <div class="p-10">
-    <div class="flex gap-5 ">
-      <button class="px-4 py-2 rounded-md bg-green-400" (click)="selectElement('earth')">Tierra</button>
-      <button class="px-4 py-2 rounded-md bg-red-400" (click)="selectElement('fire')">FUEGO</button>
-      <button class="px-4 py-2 rounded-md bg-sky-300" (click)="selectElement('aire')">AIRE</button>
-      <button class="px-4 py-2 rounded-md bg-blue-500" (click)="selectElement('water')">AGUA</button>
-      <button class="px-4 py-2 rounded-md bg-gray-300" (click)="elementSelected = ''">RESET</button>
-
-    </div>
-    <div [ngSwitch]="elementSelected">
-      <p *ngSwitchCase="'earth'">Elemento de tierra, el más rudo 🪨</p>
-      <p *ngSwitchCase="'fire'">Elemento fuego, el más rebelde ❤️‍🔥</p>
-      <p *ngSwitchCase="'air'">Elemento aire, el más inquieto 🌬️</p>
-      <p *ngSwitchCase="'water'">Elemento de agua, el más versátil 🌧️</p>
-      <p *ngSwitchDefault>Aún no decides ningún elemento</p>
-    </div>
-  </div>
-</section>
-
-
-<div>
-  <p>My custom information</p>
-  <p> Name : {{person.name}} </p>
-  <p> Description: {{ person.description }} </p>
-  <img [src]="person.profilePic" class="w-[180px] h-[180px] object-contain" />
-</div>
-
-
-
-<figure>
-  <img [src]="coolImage" alt="Imagen totalmente random" class="object-contain w-[180px] h-[180px]" />
-</figure>

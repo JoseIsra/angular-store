@@ -1,0 +1,30 @@
+<div
+  class="p-2 rounded-md shadow-md bg-slate-100 w-[10rem] md:w-[250px] md:h-[385px]"
+>
+  <figure class="h-[100px] sm:h-[180px] w-full">
+    <img
+      alt="product image basics"
+      [src]="img"
+      class="object-contain w-full h-full"
+    />
+  </figure>
+  <div class="mt-5 min-h-[60px]">
+    <p
+      [title]="title"
+      class="text-xs md:text-sm font-bold text-gray-600 m-0 line-clamp-2 max-w-[300px]"
+    >
+      {{ title }}
+    </p>
+  </div>
+  <p class="text-sm text-gray-600 m-0">
+    {{ price | currency: 'USD' : 'symbol' }}
+  </p>
+  <div class="mt-4">
+    <button
+      class="text-xs md:text-sm w-full p-2 rounded-md bg-green-500 text-[#fffffe] hover:bg-green-400 hover:text-slate-50"
+      (click)="handleSelectProduct()"
+    >
+      Add to cart
+    </button>
+  </div>
+</div>

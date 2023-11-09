@@ -1,0 +1,25 @@
+<header class="w-full shadow-md">
+  <nav class="flex flex-row justify-between items-center p-2">
+    <div class="bg-black">
+      <span class="text-white font-bold text-2xl">BRAND</span>
+    </div>
+    <div class="flex items-center gap-5 relative">
+      <p>Mr Angular 👻</p>
+      <figure class="w-[35px] h-[35px]">
+        <img
+          alt="SVG of the shopping cart"
+          src="./assets/shopping.svg"
+          class="object-contain w-full h-auto"
+        />
+      </figure>
+      <div
+        *ngIf="storeService.shoppingCart.length > 0"
+        class="absolute bottom-[-15px] right-[-10px] w-[25px] h-[25px] bg-green-500 font-bold text-white rounded-full text-center text-sm"
+      >
+        <span>
+          {{ storeService.shoppingCart.length }}
+        </span>
+      </div>
+    </div>
+  </nav>
+</header>
