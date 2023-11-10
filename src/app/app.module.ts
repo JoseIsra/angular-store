@@ -7,9 +7,17 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ProductCardComponent } from './components/product-card/product-card.component';
 import { StoreHeaderComponent } from './components/store-header/store-header.component';
+import { ReversePipe } from './pipes/reverse.pipe';
+import { HighlightDirective } from './directives/highlight.directive';
 
 @NgModule({
-  declarations: [AppComponent, ProductCardComponent, StoreHeaderComponent],
+  declarations: [
+    AppComponent,
+    ProductCardComponent,
+    StoreHeaderComponent,
+    ReversePipe,
+    HighlightDirective,
+  ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [],
   bootstrap: [AppComponent],
