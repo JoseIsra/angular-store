@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
 import { Product } from './types';
-import { StoreService } from './services/store.service';
-import { ProductsService } from './services/products.service';
 
 @Component({
   selector: 'app-root',
@@ -14,10 +12,8 @@ export class AppComponent implements OnInit {
 
   // inyección de dependencias
   constructor(
-    private storeService: StoreService,
     private title: Title,
-    private meta: Meta,
-    private productService: ProductsService
+    private meta: Meta
   ) {}
 
   ngOnInit(): void {
@@ -26,12 +22,5 @@ export class AppComponent implements OnInit {
       name: 'description',
       content: 'The drugstore with cheapiest products',
     });
-    this.productService.getAllProducts().subscribe((data) => {
-      this.products = data;
-    });
-  }
-
-  onProductSelected(product: Product) {
-    this.storeService.addProduct(product);
   }
 }

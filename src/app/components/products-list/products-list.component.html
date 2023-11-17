@@ -1,0 +1,69 @@
+<section>
+  <div class="flex gap-5">
+    <div>
+      <button
+        class="rounded-md ml-3 mt-3 px-4 py-1 bg-green-500 text-[#fffffe] font-bold hover:bg-green-400 hover:text-slate-50"
+        (click)="handleCreateNewProduct()"
+      >
+        ADD PRODUCT
+      </button>
+    </div>
+    <div>
+      <p>Páginas 📃</p>
+      <div class="flex gap-4 p-2">
+        <button
+          class="bg-green-500 text-white rounded-md px-4 py-2 hover:bg-green-400 hover:text-slate-50"
+          (click)="handleChangePage(0)"
+        >
+          1
+        </button>
+        <button
+          class="bg-green-500 text-white rounded-md px-4 py-2 hover:bg-green-400 hover:text-slate-50"
+          (click)="handleChangePage(1)"
+        >
+          2
+        </button>
+        <button
+          class="bg-green-500 text-white rounded-md px-4 py-2 hover:bg-green-400 hover:text-slate-50"
+          (click)="handleChangePage(2)"
+        >
+          3
+        </button>
+      </div>
+    </div>
+    <div>
+      <button
+        class="rounded-md ml-3 mt-3 px-4 py-1 bg-purple-500 text-[#fffffe] font-bold hover:bg-purple-400 hover:text-slate-50"
+        (click)="getSingleProduct()"
+      >
+        GET DETAIL
+      </button>
+    </div>
+  </div>
+  <section
+    class="p-5 grid w-full grid-rows-3 grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-10 justify-items-center relative"
+  >
+    <app-product-detail
+      *ngIf="detailVisible && productDetail"
+      [title]="productDetail.title"
+      [description]="productDetail.description"
+      [price]="productDetail.price"
+      [image]="productDetail.images[0]"
+      [category]="productDetail.category.name"
+      class="absolute top-0 right-0"
+      (closeDetail)="handleCloseDetail()"
+    />
+
+    <app-product-card
+      *ngFor="let product of products"
+      [title]="product.title"
+      [price]="product.price"
+      [img]="product.images[0]"
+      [tax]="product.taxes || 0"
+      (productSelected)="onProductSelected(product)"
+      (productDetail)="handleOpenProductDetail(product)"
+      (deleteProduct)="handleDeleteProduct(product.id)"
+      (editProduct)="handleEditProduct(product.id)"
+    />
+  </section>
+</section>
