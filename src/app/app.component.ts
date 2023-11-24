@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
 import { Product } from './types';
+import { TokenService } from './services/auth/token.service';
 
 @Component({
   selector: 'app-root',
@@ -13,10 +14,11 @@ export class AppComponent implements OnInit {
   // inyección de dependencias
   constructor(
     private title: Title,
-    private meta: Meta
+    private meta: Meta // private tokenService: TokenService
   ) {}
 
   ngOnInit(): void {
+    // console.log('hay token?', this.tokenService.userToken);
     this.title.setTitle('IsraStore');
     this.meta.updateTag({
       name: 'description',

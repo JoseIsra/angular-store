@@ -17,3 +17,22 @@ export type Product = {
   category: Category;
   taxes?: number;
 };
+
+export type User = {
+  id: number;
+  email: string;
+  name: string;
+  password: string;
+};
+
+export type InputCreateUser = Omit<User, 'id'>;
+
+export type AuthResponse = {
+  access_token: string;
+};
+
+export type UploadFileResponse = {
+  originalname: string;
+  filename: string;
+  location: string;
+};

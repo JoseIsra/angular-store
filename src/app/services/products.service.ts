@@ -7,20 +7,20 @@ import {
 import { InputCreateProduct, Product } from '../types';
 import { retry, catchError, map } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { checkTime } from '@/interceptors/time.interceptor';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductsService {
-  private API_URL = 'https://young-sands-07814.herokuapp.com/api/products';
   constructor(private http: HttpClient) {}
 
   getAllProducts() {
-    return this.http.get<Product[]>(this.API_URL);
+    return this.http.get<Product[]>('products');
   }
 
   getProductById(id: string) {
-    return this.http.get<Product>(`${this.API_URL}/${id}`).pipe(
+    return this.http.get<Product>(`products/${id}`).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === HttpStatusCode.BadRequest) {
           return throwError('Algo falló en el server');
@@ -37,21 +37,22 @@ export class ProductsService {
   }
 
   createProduct(input: InputCreateProduct) {
-    return this.http.post<Product>(this.API_URL, input);
+    return this.http.post<Product>('products', input);
   }
 
   updateProduct({ id, input }: { id: number; input: Partial<Product> }) {
-    return this.http.put<Product>(`${this.API_URL}/${id}`, input);
+    return this.http.put<Product>(`products/${id}`, input);
   }
 
   deleteProduct(id: number) {
-    return this.http.delete<Product>(`${this.API_URL}/${id}`);
+    return this.http.delete<Product>(`products/${id}`);
   }
 
   getProductByPage({ limit, offset }: { limit: number; offset: number }) {
     return this.http
-      .get<Product[]>(this.API_URL, {
+      .get<Product[]>('products', {
         params: { limit, offset },
+        context: checkTime(),
       })
       .pipe(
         retry(2),

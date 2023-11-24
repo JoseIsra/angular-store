@@ -1,8 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { InputCreateProduct, Product } from '@/types';
+import { InputCreateProduct, Product, UploadFileResponse, User } from '@/types';
 import { StoreService } from '@/services/store.service';
 import { ProductsService } from '@/services/products.service';
 import Swal from 'sweetalert2';
+import { switchMap } from 'rxjs/operators';
+import { zip } from 'rxjs';
+import { UsersService } from '@/services/users/users.service';
+import { AuthService } from '@/services/auth/auth.service';
+import { TokenService } from '@/services/auth/token.service';
+import { FilesService } from '@/services/files/files.service';
 
 @Component({
   selector: 'app-products-list',
@@ -11,6 +17,7 @@ import Swal from 'sweetalert2';
 })
 export class ProductsListComponent implements OnInit {
   products: Product[] = [];
+  usersList: User[] = [];
   productDetail: Product | null = null;
   detailVisible = false;
   statusDetail: 'loading' | 'success' | 'error' | 'init' = 'init';
@@ -24,9 +31,25 @@ export class ProductsListComponent implements OnInit {
     'Harry Potter and the Deathly Hallows',
   ];
 
+  userInputs = {
+    name: '',
+    email: '',
+    password: '',
+  };
+
+  loginFormVisible = false;
+  userProfile: User | null = null;
+  fileSelected: File | null = null;
+  fileUploaded = false;
+  fileData: UploadFileResponse | null = null;
+
   constructor(
     private storeService: StoreService,
-    private productService: ProductsService
+    private productService: ProductsService,
+    private userService: UsersService,
+    private authService: AuthService,
+    public tokenService: TokenService,
+    private fileService: FilesService
   ) {}
 
   ngOnInit(): void {
@@ -46,22 +69,56 @@ export class ProductsListComponent implements OnInit {
 
   getSingleProduct() {
     this.statusDetail = 'loading';
-    const id = '1000';
-    this.productService.getProductById(id).subscribe(
-      (res) => {
+    const id = '12';
+    this.productService.getProductById(id).subscribe({
+      next: (res) => {
         console.log('el detaille es', res);
         this.statusDetail = 'success';
         this.handleOpenProductDetail(res);
       },
-      (error) => {
+      error: (error) => {
         this.statusDetail = 'error';
         Swal.fire({
           title: error,
           icon: 'error',
         });
         console.error(error);
-      }
-    );
+      },
+    });
+  }
+
+  readAndUpdate(id: string) {
+    this.productService
+      .getProductById(id)
+      .pipe(
+        // LA RESPUESTA DE UN OBSERVABLE INGRESA EN EL OTRO OBSERVABLE CON SWITHMAP
+        switchMap((product) =>
+          this.productService.updateProduct({
+            id: product.id,
+            input: {
+              title: 'something',
+            },
+          })
+        )
+      )
+      .subscribe((data) => {
+        //esta es la manera cuando se considera como una dependencia
+        // de subscribe
+        console.log('data fetch y actualizada', data);
+      });
+
+    zip(
+      this.productService.getProductById(id),
+      this.productService.updateProduct({
+        id: Number(id),
+        input: { title: 'Onomatopeya' },
+      })
+    ).subscribe((response) => {
+      // este zip es el Promise.all([]) de los observables
+      // response debe ser una respuesta en forma de arreglo
+      // en el orden de las petiticiones realizadas
+      console.log('rsponse', response);
+    });
   }
 
   handleChangePage(page: number) {
@@ -146,5 +203,119 @@ export class ProductsListComponent implements OnInit {
           },
         });
       });
+  }
+
+  handleSubmitForm() {
+    this.userService
+      .createUser({
+        email: this.userInputs.email,
+        name: this.userInputs.name,
+        password: this.userInputs.password,
+      })
+      .subscribe(() => {
+        this.userInputs.email = '';
+        this.userInputs.password = '';
+        this.userInputs.name = '';
+        Swal.fire({
+          title: 'Nuevo usuario creado',
+          icon: 'success',
+        });
+      });
+  }
+
+  getAllUsers() {
+    this.userService.getUsers().subscribe((data) => {
+      console.log('users fetch', data);
+      this.usersList = data;
+    });
+  }
+
+  toggleLoginForm() {
+    this.loginFormVisible = !this.loginFormVisible;
+  }
+
+  handleUserLogin() {
+    this.authService
+      .login({
+        email: this.userInputs.email,
+        password: this.userInputs.password,
+      })
+      .subscribe(() => {
+        Swal.fire({
+          title: 'Login exitoso 😀',
+          icon: 'success',
+        });
+      });
+  }
+
+  handleGetProfile() {
+    this.authService.getProfile().subscribe({
+      next: (res) => {
+        Swal.fire({
+          title: 'Perfil recuperado 😀',
+          icon: 'success',
+        });
+        this.userProfile = res;
+      },
+      error: () => {
+        Swal.fire({
+          title: 'No se pudo recuperar perfil',
+          icon: 'error',
+        });
+      },
+    });
+  }
+
+  handleLogOut() {
+    this.userProfile = null;
+    this.tokenService.removeToken();
+  }
+
+  downloadPdf() {
+    this.fileService
+      .getFile(
+        'my.pdf',
+        'https://young-sands-07814.herokuapp.com/api/files/dummy.pdf',
+        'application/pdf'
+      )
+      .subscribe(() => {
+        Swal.fire({
+          title: 'PDF descargado',
+          icon: 'success',
+        });
+      });
+  }
+
+  handleUploadFile() {
+    this.fileUploaded = false;
+    console.log('fiel to upload?=', this.fileSelected);
+    const form = new FormData();
+    form.append('file', this.fileSelected as File);
+    this.fileService.uploadFile(form).subscribe({
+      next: (response) => {
+        this.fileData = response;
+        this.fileUploaded = true;
+        Swal.fire({
+          title: 'File uploaded!',
+          icon: 'success',
+        });
+      },
+      error: () => {
+        this.fileUploaded = false;
+        Swal.fire({
+          title: 'No se subió el archivo',
+          icon: 'error',
+        });
+      },
+    });
+  }
+
+  handleFileChanged(event: Event) {
+    const element = event.target as HTMLInputElement;
+    const file = element.files?.[0];
+    if (file) {
+      this.fileUploaded = false;
+      this.fileSelected = file;
+    }
   }
 }
