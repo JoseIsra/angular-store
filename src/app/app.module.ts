@@ -12,10 +12,20 @@ import { StoreHeaderComponent } from './components/store-header/store-header.com
 import { ReversePipe } from './pipes/reverse.pipe';
 import { HighlightDirective } from './directives/highlight.directive';
 import { ProductsListComponent } from './components/products-list/products-list.component';
+import { ProductInfoComponent } from './pages/product-info/product-info.component';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { ApiInterceptor } from './interceptors/api/api.interceptor';
 import { TimeInterceptor } from './interceptors/time.interceptor';
+import { HomeComponent } from './pages/home/home.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { CategoryComponent } from './pages/category/category.component';
+import { CartComponent } from './pages/cart/cart.component';
+import { LoginComponent } from './pages/login/login.component';
+import { RegisterComponent } from './pages/register/register.component';
+import { RecoveryComponent } from './pages/recovery/recovery.component';
+import { ProfileComponent } from './pages/profile/profile.component';
+import { CategoryListComponent } from './components/shared/category-list/category-list.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +35,16 @@ import { TimeInterceptor } from './interceptors/time.interceptor';
     ReversePipe,
     HighlightDirective,
     ProductsListComponent,
+    ProductInfoComponent,
+    HomeComponent,
+    NotFoundComponent,
+    CategoryComponent,
+    CartComponent,
+    LoginComponent,
+    RegisterComponent,
+    RecoveryComponent,
+    ProfileComponent,
+    CategoryListComponent,
     ProductDetailComponent,
   ],
   imports: [

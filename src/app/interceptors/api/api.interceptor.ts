@@ -8,6 +8,7 @@ import {
   HttpContextToken,
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '@/environments/environment';
 
 const COMMON_API = new HttpContextToken<boolean>(() => true);
 
@@ -17,7 +18,7 @@ export function disableCommonApi() {
 
 @Injectable()
 export class ApiInterceptor implements HttpInterceptor {
-  API = 'https://young-sands-07814.herokuapp.com/api';
+  API = environment.API_URL;
 
   intercept(
     request: HttpRequest<unknown>,

@@ -4,7 +4,7 @@ import {
   HttpErrorResponse,
   HttpStatusCode,
 } from '@angular/common/http';
-import { InputCreateProduct, Product } from '../types';
+import { Category, InputCreateProduct, Product } from '../types';
 import { retry, catchError, map } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { checkTime } from '@/interceptors/time.interceptor';
@@ -63,5 +63,13 @@ export class ProductsService {
           }))
         )
       );
+  }
+
+  getProductsByCategory(categoryId: number) {
+    return this.http.get<Product[]>(`categories/${categoryId}/products`);
+  }
+
+  getCategories() {
+    return this.http.get<Category[]>('categories');
   }
 }

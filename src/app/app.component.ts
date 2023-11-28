@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
 import { Product } from './types';
-import { TokenService } from './services/auth/token.service';
 
 @Component({
   selector: 'app-root',

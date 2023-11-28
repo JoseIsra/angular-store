@@ -2,7 +2,7 @@ export type InputCreateProduct = Omit<Product, 'id' | 'category'> & {
   categoryId: number;
 };
 
-type Category = {
+export type Category = {
   id: number;
   name: string;
   typeImg: string;

@@ -1,77 +1,4 @@
 <section>
-  <div class="flex gap-5">
-    <div>
-      <button
-        class="rounded-md ml-3 mt-3 px-4 py-1 bg-green-500 text-[#fffffe] font-bold hover:bg-green-400 hover:text-slate-50"
-        (click)="handleCreateNewProduct()"
-      >
-        ADD PRODUCT
-      </button>
-    </div>
-    <div>
-      <p>Páginas 📃</p>
-      <div class="flex gap-4 p-2">
-        <button
-          class="bg-green-500 text-white rounded-md px-4 py-2 hover:bg-green-400 hover:text-slate-50"
-          (click)="handleChangePage(0)"
-        >
-          1
-        </button>
-        <button
-          class="bg-green-500 text-white rounded-md px-4 py-2 hover:bg-green-400 hover:text-slate-50"
-          (click)="handleChangePage(1)"
-        >
-          2
-        </button>
-        <button
-          class="bg-green-500 text-white rounded-md px-4 py-2 hover:bg-green-400 hover:text-slate-50"
-          (click)="handleChangePage(2)"
-        >
-          3
-        </button>
-      </div>
-    </div>
-    <div>
-      <button
-        class="rounded-md ml-3 mt-3 px-4 py-1 bg-purple-500 text-[#fffffe] font-bold hover:bg-purple-400 hover:text-slate-50"
-        (click)="getSingleProduct()"
-      >
-        GET DETAIL
-      </button>
-    </div>
-    <div>
-      <button
-        class="rounded-md ml-3 mt-3 px-4 py-1 bg-purple-500 text-[#fffffe] font-bold hover:bg-purple-400 hover:text-slate-50"
-        (click)="downloadPdf()"
-      >
-        Descargar PDF
-      </button>
-    </div>
-  </div>
-  <div>
-    <p>Selector de archivos chidos</p>
-    <form (ngSubmit)="handleUploadFile()">
-      <input type="file" name="file" (change)="handleFileChanged($event)" />
-      <button
-        type="submit"
-        class="rounded-md ml-3 mt-3 px-4 py-1 bg-purple-500 text-[#fffffe] font-bold hover:bg-purple-400 hover:text-slate-50"
-      >
-        Upload file
-      </button>
-    </form>
-  </div>
-
-  <div *ngIf="fileUploaded && fileData">
-    <p>Tienes un nuevo archivo°°!!!°°</p>
-    <figure class="w-[300px] h-[280px]">
-      <img
-        alt="Basic logo of the image"
-        [src]="fileData.location"
-        class="w-full h-full object-containt"
-      />
-    </figure>
-  </div>
-
   <section
     class="p-5 grid w-full grid-rows-3 grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-10 justify-items-center relative"
   >
@@ -98,90 +25,13 @@
       (editProduct)="handleEditProduct(product.id)"
     />
   </section>
-
-  <section class="my-10">
-    <div class="flex gap-4 items-center">
-      <h1>Traer usuarios</h1>
-      <button
-        class="rounded-md ml-3 mt-3 px-4 py-1 bg-green-500 text-[#fffffe] font-bold hover:bg-green-400 hover:text-slate-50"
-        (click)="getAllUsers()"
-      >
-        FETCH USERS
-      </button>
-      <button
-        class="rounded-md ml-3 mt-3 px-4 py-1 bg-green-500 text-[#fffffe] font-bold hover:bg-green-400 hover:text-slate-50"
-        (click)="toggleLoginForm()"
-      >
-        LOGIN / SIGN UP
-      </button>
-      <button
-        *ngIf="tokenService.userToken.length > 0"
-        class="rounded-md ml-3 mt-3 px-4 py-1 bg-green-500 text-[#fffffe] font-bold hover:bg-green-400 hover:text-slate-50"
-        (click)="handleLogOut()"
-      >
-        LOG OUT
-      </button>
-      <button
-        *ngIf="tokenService.userToken.length > 0"
-        class="rounded-md ml-3 mt-3 px-4 py-1 bg-green-500 text-[#fffffe] font-bold hover:bg-green-400 hover:text-slate-50"
-        (click)="handleGetProfile()"
-      >
-        GET PROFILE
-      </button>
-    </div>
-    <div>
-      <p *ngIf="loginFormVisible; else loginToggle">INICIAR SESIÓN</p>
-      <ng-template #loginToggle>
-        <p>SIGN_UP</p>
-      </ng-template>
-    </div>
-    <form
-      #userForm
-      autocomplete="off"
-      class="w-[425px] p-3"
-      (ngSubmit)="loginFormVisible ? handleUserLogin() : handleSubmitForm()"
+  <div class="w-full flex justify-end p-3 gap-3">
+    <div
+      *ngFor="let num of [1, 2, 3, 4]"
+      class="p-2 rounded-md"
+      [ngClass]="{ 'bg-green-700 text-white': currentPage === num }"
     >
-      <div *ngIf="!loginFormVisible" class="flex gap-4 items-center">
-        <label for="username">Nombre</label>
-        <input
-          class="border border-purple-300 p-2 text-gray-500 rounded-md outline-none"
-          name="username"
-          [(ngModel)]="userInputs.name"
-        />
-      </div>
-      <div class="flex gap-4 items-center">
-        <label for="email">Email</label>
-        <input
-          class="border border-purple-300 p-2 text-gray-500 rounded-md outline-none"
-          name="email"
-          [(ngModel)]="userInputs.email"
-        />
-      </div>
-      <div class="flex gap-4 items-center">
-        <label for="password">Contraseña</label>
-        <input
-          class="border border-purple-300 p-2 text-gray-500 rounded-md outline-none"
-          name="password"
-          type="password"
-          [(ngModel)]="userInputs.password"
-        />
-      </div>
-      <div>
-        <button
-          class="w-full p-3 bg-purple-500 hover:bg-purple-400 text-white rounded-md"
-        >
-          {{ loginFormVisible ? 'INICIAR SESIÓN' : 'REGISTRARSE' }}
-        </button>
-      </div>
-    </form>
-    <section class="p-4">
-      <div *ngFor="let user of usersList">
-        <p>{{ user.name }} 👻 - {{ user.email }} {{ user.password }}</p>
-      </div>
-    </section>
-    <section class="mt-10" *ngIf="userProfile !== null">
-      <p>TIENES PERFIL</p>
-      {{ userProfile.name }} - {{ userProfile.email }}
-    </section>
-  </section>
+      <button (click)="handlePageChange(num)">{{ num }}</button>
+    </div>
+  </div>
 </section>

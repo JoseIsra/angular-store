@@ -1,0 +1,28 @@
+.option {
+  &__item {
+    display: flex;
+    position: relative;
+    justify-content: center;
+  }
+  &__content {
+    display: inline-block;
+    position: relative;
+    &:hover {
+      &::after {
+        width: 100%;
+      }
+    }
+    &::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 3px;
+      bottom: 0;
+      transform: translateX(-100%);
+      left: 100%;
+      transform-origin: center;
+      background-color: red;
+      transition: width 0.1s ease;
+    }
+  }
+}

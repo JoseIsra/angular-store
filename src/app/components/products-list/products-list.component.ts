@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { InputCreateProduct, Product, UploadFileResponse, User } from '@/types';
 import { StoreService } from '@/services/store.service';
 import { ProductsService } from '@/services/products.service';
@@ -9,14 +9,17 @@ import { UsersService } from '@/services/users/users.service';
 import { AuthService } from '@/services/auth/auth.service';
 import { TokenService } from '@/services/auth/token.service';
 import { FilesService } from '@/services/files/files.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-products-list',
   templateUrl: './products-list.component.html',
   styleUrls: ['./products-list.component.scss'],
 })
-export class ProductsListComponent implements OnInit {
-  products: Product[] = [];
+export class ProductsListComponent {
+  @Input() products: Product[] = [];
+  @Output() pageChanged = new EventEmitter<number>();
+
   usersList: User[] = [];
   productDetail: Product | null = null;
   detailVisible = false;
@@ -42,6 +45,7 @@ export class ProductsListComponent implements OnInit {
   fileSelected: File | null = null;
   fileUploaded = false;
   fileData: UploadFileResponse | null = null;
+  currentPage = 1;
 
   constructor(
     private storeService: StoreService,
@@ -49,23 +53,9 @@ export class ProductsListComponent implements OnInit {
     private userService: UsersService,
     private authService: AuthService,
     public tokenService: TokenService,
-    private fileService: FilesService
+    private fileService: FilesService,
+    private routerService: Router
   ) {}
-
-  ngOnInit(): void {
-    this.loadProducts();
-  }
-
-  loadProducts(limit = 10, offset = 0) {
-    this.productService
-      .getProductByPage({
-        limit,
-        offset: offset * 10,
-      })
-      .subscribe((data) => {
-        this.products = data;
-      });
-  }
 
   getSingleProduct() {
     this.statusDetail = 'loading';
@@ -85,6 +75,11 @@ export class ProductsListComponent implements OnInit {
         console.error(error);
       },
     });
+  }
+
+  handlePageChange(page: number) {
+    this.currentPage = page;
+    this.pageChanged.emit(page);
   }
 
   readAndUpdate(id: string) {
@@ -121,10 +116,6 @@ export class ProductsListComponent implements OnInit {
     });
   }
 
-  handleChangePage(page: number) {
-    this.loadProducts(10, page);
-  }
-
   getRandomIndex() {
     return Math.floor(Math.random() * this.movieTitles.length);
   }
@@ -149,8 +140,7 @@ export class ProductsListComponent implements OnInit {
   }
 
   handleOpenProductDetail(product: Product) {
-    this.productDetail = product;
-    this.detailVisible = true;
+    this.routerService.navigate([`/product/${product.id}`]);
   }
 
   handleCloseDetail() {
