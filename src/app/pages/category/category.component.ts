@@ -12,9 +12,10 @@ import { switchMap } from 'rxjs/operators';
 export class CategoryComponent implements OnInit {
   categoryId: string | null = null;
   products: Product[] = [];
+  productId: string | null = null;
 
   constructor(
-    private route: ActivatedRoute,
+    private $route: ActivatedRoute,
     private productService: ProductsService
   ) {}
 
@@ -30,7 +31,7 @@ export class CategoryComponent implements OnInit {
     //       this.products = products;
     //     });
     // }
-    this.route.paramMap
+    this.$route.paramMap
       .pipe(
         switchMap((params) => {
           this.categoryId = params.get('id');
@@ -45,5 +46,13 @@ export class CategoryComponent implements OnInit {
       .subscribe((products) => {
         this.products = products;
       });
+
+    this.$route.queryParamMap.subscribe((queries) => {
+      console.log(
+        '🚀 ~ file: home.component.ts:22 ~ HomeComponent ~ this.$route.queryParamMap.subscribe ~ queries:',
+        queries
+      );
+      this.productId = queries.get('product');
+    });
   }
 }

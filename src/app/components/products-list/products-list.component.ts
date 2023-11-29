@@ -9,7 +9,8 @@ import { UsersService } from '@/services/users/users.service';
 import { AuthService } from '@/services/auth/auth.service';
 import { TokenService } from '@/services/auth/token.service';
 import { FilesService } from '@/services/files/files.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-products-list',
@@ -19,6 +20,13 @@ import { Router } from '@angular/router';
 export class ProductsListComponent {
   @Input() products: Product[] = [];
   @Output() pageChanged = new EventEmitter<number>();
+  @Input()
+  set productId(val: string | null) {
+    if (!val) return;
+    this.productService.getProductById(val).subscribe((product) => {
+      this.handleShowProductDetail(product);
+    });
+  }
 
   usersList: User[] = [];
   productDetail: Product | null = null;
@@ -54,7 +62,9 @@ export class ProductsListComponent {
     private authService: AuthService,
     public tokenService: TokenService,
     private fileService: FilesService,
-    private routerService: Router
+    private routerService: Router,
+    private location: Location,
+    private $route: ActivatedRoute
   ) {}
 
   getSingleProduct() {
@@ -139,8 +149,28 @@ export class ProductsListComponent {
     this.storeService.addProduct(product);
   }
 
+  handleShowProductDetail(product: Product) {
+    if (!this.detailVisible) {
+      this.detailVisible = true;
+    }
+    this.productService
+      .getProductById(String(product.id))
+      .subscribe((product) => {
+        this.productDetail = product;
+      });
+  }
+
   handleOpenProductDetail(product: Product) {
-    this.routerService.navigate([`/product/${product.id}`]);
+    // usamos [] para actualizar la misma ruta me parece
+    this.routerService.navigate([], {
+      queryParams: {
+        product: product.id,
+      },
+    });
+  }
+
+  handleShowProductPage(id: number) {
+    this.routerService.navigate([`/product/${id}`]);
   }
 
   handleCloseDetail() {
@@ -163,11 +193,7 @@ export class ProductsListComponent {
   }
 
   handleDeleteProduct(id: number) {
-    this.productService.deleteProduct(id).subscribe((response) => {
-      console.log(
-        '🚀 ~ file: products-list.component.ts:72 ~ ProductsListComponent ~ this.productService.deleteProduct ~ response:',
-        response
-      );
+    this.productService.deleteProduct(id).subscribe(() => {
       this.deleteProduct(id);
     });
   }

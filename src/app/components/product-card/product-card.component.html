@@ -15,7 +15,12 @@
       <ng-icon name="bootstrapTrash" size="16px"></ng-icon>
     </button>
   </div>
-  <figure class="h-[100px] sm:h-[180px] w-full">
+  <figure
+    class="h-[100px] sm:h-[180px] w-full"
+    (click)="handleShowProductPage()"
+    tabindex="0"
+    (keydown.enter)="handleShowProductPage()"
+  >
     <img
       alt="product image basics"
       [src]="img"

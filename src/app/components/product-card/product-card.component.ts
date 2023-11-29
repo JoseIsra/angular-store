@@ -12,6 +12,7 @@ export class ProductCardComponent {
   @Input() tax = 0;
   @Output() productSelected = new EventEmitter();
   @Output() productDetail = new EventEmitter();
+  @Output() showProductPage = new EventEmitter();
   @Output() editProduct = new EventEmitter();
   @Output() deleteProduct = new EventEmitter();
 
@@ -29,5 +30,9 @@ export class ProductCardComponent {
 
   handleDeleteProduct() {
     this.deleteProduct.emit();
+  }
+
+  handleShowProductPage() {
+    this.showProductPage.emit();
   }
 }

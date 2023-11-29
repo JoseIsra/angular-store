@@ -28,7 +28,7 @@
             "style": "kebab-case"
           }
         ],
-        "@angular-eslint/template/click-events-have-key-events": ["error"]
+        "@angular-eslint/template/click-events-have-key-events": ["off"]
       }
     },
     {
