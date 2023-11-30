@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { routes } from './routes/app.routes';
-import { CustomPreloadService } from './services/custom-preload/custom-preload.service';
+// import { CustomPreloadService } from './services/custom-preload/custom-preload.service';
 import { QuicklinkStrategy } from 'ngx-quicklink';
 
 /* 
