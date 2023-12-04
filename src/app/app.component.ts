@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
 import { Product } from './types';
+import { AuthService } from './services/auth/auth.service';
+import { TokenService } from './services/auth/token.service';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +15,9 @@ export class AppComponent implements OnInit {
   // inyección de dependencias
   constructor(
     private title: Title,
-    private meta: Meta // private tokenService: TokenService
+    private meta: Meta,
+    private tokenService: TokenService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -23,5 +27,10 @@ export class AppComponent implements OnInit {
       name: 'description',
       content: 'The drugstore with cheapiest products',
     });
+
+    const token = this.tokenService.userToken;
+    if (token) {
+      this.authService.getProfile().subscribe();
+    }
   }
 }

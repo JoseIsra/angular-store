@@ -227,6 +227,7 @@ export class ProductsListComponent {
         email: this.userInputs.email,
         name: this.userInputs.name,
         password: this.userInputs.password,
+        role: 'admin',
       })
       .subscribe(() => {
         this.userInputs.email = '';

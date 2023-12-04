@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { WebsiteRoutingModule } from './website-routing.module';
 
@@ -38,6 +39,7 @@ import { QuicklinkModule } from 'ngx-quicklink';
     NgIconsModule.withIcons({ ...allBoots }),
     SharedModule,
     QuicklinkModule,
+    FormsModule,
   ],
   exports: [],
 })

@@ -1,1 +1,54 @@
-<p>login works!</p>
+<section class="grid place-content-center">
+  <div class="w-full p-5">
+    <form
+      autocomplete="off"
+      class="p-5 rounded-md bg-slate-100 shadow-lg w-[20rem] flex flex-col items-center gap-5"
+      (ngSubmit)="handleSubmitLogin()"
+    >
+      <p class="font-bold text-green-700 text-center text-2xl">Login</p>
+      <div class="p-1 w-full">
+        <label for="email" class="block text-gray-600 font-semibold text-lgh"
+          >Correo:</label
+        >
+        <input
+          id="email"
+          [(ngModel)]="userInputs.email"
+          name="email"
+          class="w-full outline-none border-[1px] focus:border-2 border-green-500 p-2 rounded-md bg-transparent"
+        />
+      </div>
+      <div class="p-1 w-full">
+        <label for="password" class="block text-gray-600 font-semibold text-lgh"
+          >Contraseña:</label
+        >
+        <div class="flex gap-2 items-center">
+          <input
+            id="password"
+            name="password"
+            [(ngModel)]="userInputs.password"
+            class="w-full outline-none border-[1px] focus:border-2 border-green-500 p-2 rounded-md bg-transparent"
+            [type]="passwordVisible ? 'text' : 'password'"
+          />
+          <button type="button" (click)="togglePasswordVisible()">
+            <ng-icon
+              *ngIf="passwordVisible; else passwordInvisible"
+              name="bootstrapEyeSlashFill"
+              size="25px"
+            ></ng-icon>
+            <ng-template #passwordInvisible>
+              <ng-icon name="bootstrapEyeFill" size="25px"></ng-icon>
+            </ng-template>
+          </button>
+        </div>
+      </div>
+      <div class="w-full">
+        <button
+          class="w-full bg-green-700 hover:bg-green-600 text-white hover:text-slate-100 font-bold p-2 rounded-md"
+          type="submit"
+        >
+          Iniciar sesión
+        </button>
+      </div>
+    </form>
+  </div>
+</section>

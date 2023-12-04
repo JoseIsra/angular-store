@@ -6,20 +6,36 @@
       >
     </div>
     <div class="flex items-center gap-5 relative">
-      <div>
-        <button
-          routerLink="/login"
-          class="rounded-md bg-green-600 px-4 py-2 hover:bg-green-500 hover:text-slate-300"
-        >
-          <span class="text-white font-semibold">Iniciar sesión</span>
-        </button>
+      <div *ngIf="!user" class="flex gap-5">
+        <div>
+          <a
+            routerLink="/login"
+            class="rounded-md bg-green-600 px-4 py-2 hover:bg-green-500 hover:text-slate-300 block"
+          >
+            <span class="text-white font-semibold">Iniciar sesión</span>
+          </a>
+        </div>
+        <div>
+          <a
+            routerLink="/register"
+            class="block rounded-md bg-green-100 px-4 py-2 hover:bg-green-200 hover:text-green-700"
+          >
+            <span class="text-green-700 font-semibold">Crear cuenta</span>
+          </a>
+        </div>
       </div>
-      <div>
-        <button
-          routerLink="/login"
-          class="rounded-md bg-green-100 px-4 py-2 hover:bg-green-200 hover:text-green-700"
+      <div *ngIf="user" class="flex gap-5">
+        <a
+          routerLink="/profile"
+          class="p-1 bg-green-100 text-green-700 font-semibold rounded-md"
         >
-          <span class="text-green-700 font-semibold">Crear cuenta</span>
+          <span class="text-xl">{{ user.name }}</span>
+        </a>
+        <button
+          class="block rounded-md bg-green-100 px-4 py-2 hover:bg-green-200 hover:text-green-700"
+          (click)="handleLogout()"
+        >
+          Cerrar sesión
         </button>
       </div>
       <figure class="w-[35px] h-[35px]">
